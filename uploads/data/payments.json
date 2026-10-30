@@ -1,0 +1,44 @@
+[
+  {
+    "_id": "pay_1789121829985_y9lnj",
+    "createdAt": "2026-09-11T10:17:09.985Z",
+    "updatedAt": "2026-09-11T10:17:13.809Z",
+    "status": "success",
+    "gateway": "SSLCommerz",
+    "tranId": "DM_1789121829984_302X9",
+    "userId": "usr_1789121820533_lxpqa",
+    "userEmail": "ssltest@example.com",
+    "userName": "SSL Test User",
+    "plan": "pro",
+    "billingCycle": "monthly",
+    "amount": 4,
+    "currency": "USD",
+    "gatewayPageUrl": "https://sandbox.sslcommerz.com/EasyCheckOut/testcde3db0c68a4abc4bbd35d7478f6fe9dfa1",
+    "sessionKey": "3DB0C68A4ABC4BBD35D7478F6FE9DFA1",
+    "valId": "SIM_VAL_1789121833809",
+    "cardType": "bKash Online",
+    "bankTranId": "TXN_YCCXFOZ9",
+    "metadata": {
+      "simulated": true,
+      "completedAt": "2026-09-11T10:17:13.809Z",
+      "phoneNumber": "01712345678"
+    }
+  },
+  {
+    "_id": "pay_1789121826114_c1q4h",
+    "createdAt": "2026-09-11T10:17:06.114Z",
+    "updatedAt": "2026-09-11T10:17:06.867Z",
+    "status": "pending",
+    "gateway": "SSLCommerz",
+    "tranId": "DM_1789121826114_38563",
+    "userId": "usr_1789121820533_lxpqa",
+    "userEmail": "ssltest@example.com",
+    "userName": "SSL Test User",
+    "plan": "pro",
+    "billingCycle": "monthly",
+    "amount": 480,
+    "currency": "BDT",
+    "gatewayPageUrl": "https://sandbox.sslcommerz.com/EasyCheckOut/testcde15573a187e7d5ab60247f3cd7f1738ef",
+    "sessionKey": "15573A187E7D5AB60247F3CD7F1738EF"
+  }
+]

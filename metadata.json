@@ -1,0 +1,6 @@
+{
+  "name": "DocuMorph - Online PDF & Document Suite",
+  "description": "Production-ready MERN PDF & document conversion SaaS platform featuring real PDF tools, secure JWT auth, guest-to-account preservation, user dashboard, and technical SEO.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

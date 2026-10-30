@@ -1,0 +1,230 @@
+[
+  {
+    "_id": "log_1789121833810_c2byj",
+    "createdAt": "2026-09-11T10:17:13.810Z",
+    "action": "payment_success",
+    "details": "User subscribed to PRO via bKash Online (TranID: DM_1789121829984_302X9)",
+    "userId": "usr_1789121820533_lxpqa"
+  },
+  {
+    "_id": "log_1789121820683_5r8vz",
+    "createdAt": "2026-09-11T10:17:00.683Z",
+    "userId": "usr_1789121820533_lxpqa",
+    "userName": "SSL Test User",
+    "userEmail": "ssltest@example.com",
+    "action": "Account Created",
+    "category": "auth",
+    "details": {
+      "method": "local",
+      "notification": "dispatched"
+    },
+    "ipAddress": "127.0.0.1"
+  },
+  {
+    "_id": "log_1789121570992_qicr7",
+    "userId": "admin_usr_001",
+    "userName": "Sarah Chen (Platform Admin)",
+    "userEmail": "admin@documorph.io",
+    "action": "Executed PDF TO WORD",
+    "category": "tool",
+    "details": {
+      "toolSlug": "pdf-to-word",
+      "originalSize": 506337,
+      "outputSize": 178
+    },
+    "ipAddress": "127.0.0.1",
+    "createdAt": "2026-09-11T10:12:50.992Z",
+    "updatedAt": "2026-09-11T10:12:50.992Z",
+    "__v": 0
+  },
+  {
+    "_id": "log_1789105950623_mwcg2",
+    "userId": "admin_usr_001",
+    "userName": "Sarah Chen (Platform Admin)",
+    "userEmail": "admin@documorph.io",
+    "action": "Executed Image to PDF",
+    "category": "tool",
+    "details": {
+      "toolSlug": "image-to-pdf",
+      "originalSize": 367376,
+      "outputSize": 506337
+    },
+    "ipAddress": "127.0.0.1",
+    "createdAt": "2026-09-11T05:52:30.623Z",
+    "updatedAt": "2026-09-11T05:52:30.623Z",
+    "__v": 0
+  },
+  {
+    "_id": "log_1789078359635_d2po6",
+    "userId": "admin_usr_001",
+    "userName": "Sarah Chen (Platform Admin)",
+    "userEmail": "admin@documorph.io",
+    "action": "Executed Image to PDF",
+    "category": "tool",
+    "details": {
+      "toolSlug": "image-to-pdf",
+      "originalSize": 367376,
+      "outputSize": 506337
+    },
+    "ipAddress": "127.0.0.1",
+    "createdAt": "2026-09-10T22:12:39.635Z",
+    "updatedAt": "2026-09-10T22:12:39.635Z",
+    "__v": 0
+  },
+  {
+    "_id": "log_1789078352916_agus4",
+    "userId": "admin_usr_001",
+    "userName": "Sarah Chen (Platform Admin)",
+    "userEmail": "admin@documorph.io",
+    "action": "User Signed In",
+    "category": "auth",
+    "ipAddress": "127.0.0.1",
+    "createdAt": "2026-09-10T22:12:32.916Z",
+    "updatedAt": "2026-09-10T22:12:32.916Z",
+    "__v": 0
+  },
+  {
+    "_id": "log_1789078352373_1ugq8",
+    "userId": "admin_usr_001",
+    "userName": "Sarah Chen (Platform Admin)",
+    "userEmail": "admin@documorph.io",
+    "action": "User Signed In",
+    "category": "auth",
+    "ipAddress": "127.0.0.1",
+    "createdAt": "2026-09-10T22:12:32.373Z",
+    "updatedAt": "2026-09-10T22:12:32.373Z",
+    "__v": 0
+  },
+  {
+    "_id": "log_1789078352356_23sjj",
+    "userId": "admin_usr_001",
+    "userName": "Sarah Chen (Platform Admin)",
+    "userEmail": "admin@documorph.io",
+    "action": "User Signed In",
+    "category": "auth",
+    "ipAddress": "127.0.0.1",
+    "createdAt": "2026-09-10T22:12:32.356Z",
+    "updatedAt": "2026-09-10T22:12:32.356Z",
+    "__v": 0
+  },
+  {
+    "_id": "log_1789076852359_j3fva",
+    "userId": "usr_1789075994537_6bd2w",
+    "userName": "RAHMAN",
+    "userEmail": "mdjisaun86@gmail.com",
+    "action": "Executed Image to PDF",
+    "category": "tool",
+    "details": {
+      "toolSlug": "image-to-pdf",
+      "originalSize": 367376,
+      "outputSize": 506337
+    },
+    "ipAddress": "127.0.0.1",
+    "createdAt": "2026-09-10T21:47:32.359Z",
+    "updatedAt": "2026-09-10T21:47:32.359Z",
+    "__v": 0
+  },
+  {
+    "_id": "log_1789076341571_z6sza",
+    "userId": "admin_usr_001",
+    "userName": "Sarah Chen (Platform Admin)",
+    "userEmail": "admin@documorph.io",
+    "action": "Executed Image to PDF",
+    "category": "tool",
+    "details": {
+      "toolSlug": "image-to-pdf",
+      "originalSize": 140,
+      "outputSize": 1720
+    },
+    "ipAddress": "127.0.0.1",
+    "createdAt": "2026-09-10T21:39:01.571Z",
+    "updatedAt": "2026-09-10T21:39:01.571Z",
+    "__v": 0
+  },
+  {
+    "_id": "log_1789076340966_efvlg",
+    "userId": "admin_usr_001",
+    "userName": "Sarah Chen (Platform Admin)",
+    "userEmail": "admin@documorph.io",
+    "action": "User Signed In",
+    "category": "auth",
+    "ipAddress": "127.0.0.1",
+    "createdAt": "2026-09-10T21:39:00.966Z",
+    "updatedAt": "2026-09-10T21:39:00.966Z",
+    "__v": 0
+  },
+  {
+    "_id": "log_1789076337406_1yrr8",
+    "userId": "admin_usr_001",
+    "userName": "Sarah Chen (Platform Admin)",
+    "userEmail": "admin@documorph.io",
+    "action": "User Signed In",
+    "category": "auth",
+    "ipAddress": "127.0.0.1",
+    "createdAt": "2026-09-10T21:38:57.406Z",
+    "updatedAt": "2026-09-10T21:38:57.406Z",
+    "__v": 0
+  },
+  {
+    "_id": "log_1789075994699_uj0ce",
+    "userId": "usr_1789075994537_6bd2w",
+    "userName": "RAHMAN",
+    "userEmail": "mdjisaun86@gmail.com",
+    "action": "Account Created",
+    "category": "auth",
+    "details": {
+      "method": "local"
+    },
+    "ipAddress": "127.0.0.1",
+    "createdAt": "2026-09-10T21:33:14.699Z",
+    "updatedAt": "2026-09-10T21:33:14.699Z",
+    "__v": 0
+  },
+  {
+    "_id": "log_1789075692287_dr8sg",
+    "userId": "usr_1789075692145_0ca08",
+    "userName": "Jisan Test",
+    "userEmail": "test_live_verify@documorph.io",
+    "action": "Account Created",
+    "category": "auth",
+    "details": {
+      "method": "local"
+    },
+    "ipAddress": "127.0.0.1",
+    "createdAt": "2026-09-10T21:28:12.287Z",
+    "updatedAt": "2026-09-10T21:28:12.287Z",
+    "__v": 0
+  },
+  {
+    "_id": "log_002",
+    "__v": 0,
+    "action": "Executed Compress PDF Operation",
+    "category": "tool",
+    "createdAt": "2026-09-10T21:26:14.479Z",
+    "details": {
+      "tool": "compress-pdf",
+      "outputSize": 1950000
+    },
+    "ipAddress": "127.0.0.1",
+    "updatedAt": "2026-09-10T21:26:14.479Z",
+    "userEmail": "admin@documorph.io",
+    "userId": "admin_usr_001",
+    "userName": "Sarah Chen (Platform Admin)"
+  },
+  {
+    "_id": "log_001",
+    "__v": 0,
+    "action": "User Authentication Success",
+    "category": "auth",
+    "createdAt": "2026-09-10T21:26:14.344Z",
+    "details": {
+      "method": "password",
+      "role": "admin"
+    },
+    "ipAddress": "127.0.0.1",
+    "updatedAt": "2026-09-10T21:26:14.344Z",
+    "userEmail": "admin@documorph.io",
+    "userId": "admin_usr_001",
+    "userName": "Sarah Chen (Platform Admin)"
+  }
+]
