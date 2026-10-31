@@ -26,13 +26,27 @@ export const AuthModal: React.FC = () => {
           return;
         }
         const res = await register(name, email, password);
-        if (!res.success) setError(res.message || 'Registration failed.');
+        if (!res.success) {
+          const msg = res.message || 'Registration failed.';
+          setError(
+            msg.includes('JSON') || msg.includes('token') || msg.includes('FUNCTION_INVOCATION')
+              ? 'Unable to complete server registration. Please try again.'
+              : msg
+          );
+        }
       } else {
         const res = await login(email, password);
-        if (!res.success) setError(res.message || 'Invalid credentials.');
+        if (!res.success) {
+          const msg = res.message || 'Invalid credentials.';
+          setError(
+            msg.includes('JSON') || msg.includes('token') || msg.includes('FUNCTION_INVOCATION')
+              ? 'Unable to verify credentials. Please try again.'
+              : msg
+          );
+        }
       }
     } catch (err: any) {
-      setError(err.message || 'Authentication error.');
+      setError('An unexpected authentication error occurred. Please try again.');
     } finally {
       setLoading(false);
     }

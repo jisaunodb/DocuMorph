@@ -4,12 +4,21 @@ import fs from 'fs';
 import { Request, Response, NextFunction } from 'express';
 import { config } from '../config/env';
 
-const TEMP_DIR = path.join(process.cwd(), 'uploads', 'temp');
-const PROCESSED_DIR = path.join(process.cwd(), 'uploads', 'processed');
+import os from 'os';
 
-// Ensure directories exist
-if (!fs.existsSync(TEMP_DIR)) fs.mkdirSync(TEMP_DIR, { recursive: true });
-if (!fs.existsSync(PROCESSED_DIR)) fs.mkdirSync(PROCESSED_DIR, { recursive: true });
+const isServerless = !!process.env.VERCEL || !!process.env.AWS_LAMBDA_FUNCTION_NAME || !!process.env.LAMBDA_TASK_ROOT;
+const BASE_UPLOAD_DIR = isServerless ? os.tmpdir() : process.cwd();
+
+const TEMP_DIR = path.join(BASE_UPLOAD_DIR, 'uploads', 'temp');
+const PROCESSED_DIR = path.join(BASE_UPLOAD_DIR, 'uploads', 'processed');
+
+// Safely ensure directories exist without crashing on read-only serverless filesystems
+try {
+  if (!fs.existsSync(TEMP_DIR)) fs.mkdirSync(TEMP_DIR, { recursive: true });
+  if (!fs.existsSync(PROCESSED_DIR)) fs.mkdirSync(PROCESSED_DIR, { recursive: true });
+} catch {
+  // In serverless environments, file storage is handled in-memory (multer.memoryStorage)
+}
 
 // Memory storage is great for fast document processing without leaving disk residue
 const storage = multer.memoryStorage();

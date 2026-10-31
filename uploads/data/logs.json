@@ -1,13 +1,39 @@
 [
   {
+    "_id": "log_1793451751598_3lzln",
+    "createdAt": "2026-10-31T13:02:31.598Z",
+    "userId": "usr_1793451742727_cop59",
+    "userName": "Test User",
+    "userEmail": "testuser99@documorph.io",
+    "action": "User Signed In",
+    "category": "auth",
+    "ipAddress": "127.0.0.1"
+  },
+  {
+    "_id": "log_1793451742893_i4rd5",
+    "createdAt": "2026-10-31T13:02:22.893Z",
+    "userId": "usr_1793451742727_cop59",
+    "userName": "Test User",
+    "userEmail": "testuser99@documorph.io",
+    "action": "Account Created",
+    "category": "auth",
+    "details": {
+      "method": "local",
+      "notification": "dispatched"
+    },
+    "ipAddress": "127.0.0.1"
+  },
+  {
     "_id": "log_1793450708229_sedxp",
-    "createdAt": "2026-10-31T12:45:08.229Z",
     "userId": "admin_usr_001",
     "userName": "Sarah Chen (Platform Admin)",
     "userEmail": "admin@documorph.io",
     "action": "User Signed In",
     "category": "auth",
-    "ipAddress": "127.0.0.1"
+    "ipAddress": "127.0.0.1",
+    "createdAt": "2026-10-31T12:45:08.229Z",
+    "updatedAt": "2026-10-31T12:45:08.229Z",
+    "__v": 0
   },
   {
     "_id": "act_1793450119116_ne8f",

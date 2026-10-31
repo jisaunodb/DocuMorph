@@ -10,9 +10,18 @@ import { imageService } from '../services/imageService';
 import { dataStore } from '../services/dataStore';
 import { uploadToCloudinary, testCloudinaryConnection, CloudinaryUploadResult } from '../config/cloudinary';
 
-const PROCESSED_DIR = path.join(process.cwd(), 'uploads', 'processed');
-if (!fs.existsSync(PROCESSED_DIR)) {
-  fs.mkdirSync(PROCESSED_DIR, { recursive: true });
+import os from 'os';
+
+const isServerless = !!process.env.VERCEL || !!process.env.AWS_LAMBDA_FUNCTION_NAME || !!process.env.LAMBDA_TASK_ROOT;
+const BASE_PROCESSED_DIR = isServerless ? os.tmpdir() : process.cwd();
+const PROCESSED_DIR = path.join(BASE_PROCESSED_DIR, 'uploads', 'processed');
+
+try {
+  if (!fs.existsSync(PROCESSED_DIR)) {
+    fs.mkdirSync(PROCESSED_DIR, { recursive: true });
+  }
+} catch {
+  // Silent in serverless environment
 }
 
 // Memory map for instant file downloads by token

@@ -55,11 +55,17 @@ app.use('/api/conversions', conversionRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/payment', paymentRoutes);
 
-// Serve uploads statically if local folder exists
-try {
-  app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
-} catch {
-  // Silent in serverless environments
-}
+// Global JSON error handler to guarantee the client always receives valid JSON
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error('[API Error]', err);
+  if (res.headersSent) {
+    return next(err);
+  }
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || 'Internal server error occurred.',
+    code: err.code || 'SERVER_ERROR',
+  });
+});
 
 export default app;
