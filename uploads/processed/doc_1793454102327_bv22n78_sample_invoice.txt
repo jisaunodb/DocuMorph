@@ -1,0 +1,8 @@
+--- Page 1 ---
+DocuMorph Invoice #1024
+Customer: John Doe - Dhaka, Bangladesh
+Total Amount: $250.00 USD
+
+--- Page 2 ---
+Terms & Conditions
+Payment due within 15 days of invoice date.

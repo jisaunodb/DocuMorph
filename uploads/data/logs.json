@@ -1,17 +1,32 @@
 [
   {
     "_id": "log_1793451751598_3lzln",
-    "createdAt": "2026-10-31T13:02:31.598Z",
     "userId": "usr_1793451742727_cop59",
     "userName": "Test User",
     "userEmail": "testuser99@documorph.io",
     "action": "User Signed In",
     "category": "auth",
-    "ipAddress": "127.0.0.1"
+    "ipAddress": "127.0.0.1",
+    "createdAt": "2026-10-31T13:02:31.598Z",
+    "updatedAt": "2026-10-31T13:02:31.598Z",
+    "__v": 0
+  },
+  {
+    "_id": "act_1793451742888_uzmt",
+    "userName": "Test User",
+    "userEmail": "testuser99@documorph.io",
+    "action": "Account Creation Notification Sent to testuser99@documorph.io",
+    "category": "auth",
+    "details": {
+      "status": "notification_dispatched",
+      "timestamp": "2026-10-31T13:02:22.888Z"
+    },
+    "createdAt": "2026-10-31T13:02:22.908Z",
+    "updatedAt": "2026-10-31T13:02:22.908Z",
+    "__v": 0
   },
   {
     "_id": "log_1793451742893_i4rd5",
-    "createdAt": "2026-10-31T13:02:22.893Z",
     "userId": "usr_1793451742727_cop59",
     "userName": "Test User",
     "userEmail": "testuser99@documorph.io",
@@ -21,7 +36,10 @@
       "method": "local",
       "notification": "dispatched"
     },
-    "ipAddress": "127.0.0.1"
+    "ipAddress": "127.0.0.1",
+    "createdAt": "2026-10-31T13:02:22.893Z",
+    "updatedAt": "2026-10-31T13:02:22.893Z",
+    "__v": 0
   },
   {
     "_id": "log_1793450708229_sedxp",

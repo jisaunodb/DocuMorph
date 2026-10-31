@@ -75,17 +75,18 @@
   },
   {
     "_id": "usr_1793451742727_cop59",
+    "email": "testuser99@documorph.io",
+    "__v": 0,
+    "avatar": "https://api.dicebear.com/7.x/initials/svg?seed=Test%20User",
+    "conversionsCount": 0,
+    "createdAt": "2026-10-31T13:02:22.728Z",
+    "isActive": true,
+    "name": "Test User",
+    "password": "$2b$10$.arKuuVXMv75NqQAWelymufghPLulLmWTEFpSrhREqIin3RSAhciC",
+    "plan": "free",
     "role": "user",
     "storageUsed": 0,
-    "plan": "free",
-    "conversionsCount": 0,
-    "isActive": true,
-    "createdAt": "2026-10-31T13:02:22.727Z",
-    "updatedAt": "2026-10-31T13:02:31.461Z",
-    "name": "Test User",
-    "email": "testuser99@documorph.io",
-    "password": "$2b$10$.arKuuVXMv75NqQAWelymufghPLulLmWTEFpSrhREqIin3RSAhciC",
-    "avatar": "https://api.dicebear.com/7.x/initials/svg?seed=Test%20User",
+    "updatedAt": "2026-10-31T13:02:31.462Z",
     "lastLogin": "2026-10-31T13:02:31.460Z"
   }
 ]

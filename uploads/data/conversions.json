@@ -96,5 +96,37 @@
     "status": "completed",
     "toolSlug": "image-to-pdf",
     "updatedAt": "2026-09-11T05:52:30.196Z"
+  },
+  {
+    "_id": "conv_1789121570550_gsti9",
+    "__v": 0,
+    "conversionType": "PDF TO WORD",
+    "createdAt": "2026-09-11T10:12:50.551Z",
+    "originalFileName": "gig_thumbnail (1).pdf",
+    "originalFileSize": 506337,
+    "outputDownloadUrl": "/api/tools/download/doc_1789121569308_6b4pud6",
+    "outputFileName": "gig_thumbnail (1)_converted.docx",
+    "outputFileSize": 178,
+    "owner": "admin_usr_001",
+    "processingTimeMs": 1445,
+    "status": "completed",
+    "toolSlug": "pdf-to-word",
+    "updatedAt": "2026-09-11T10:12:50.557Z"
+  },
+  {
+    "_id": "conv_1793449792737_31x3n",
+    "__v": 0,
+    "conversionType": "Split PDF",
+    "createdAt": "2026-10-31T12:29:52.738Z",
+    "originalFileName": "book-02.pdf",
+    "originalFileSize": 8134789,
+    "outputDownloadUrl": "/api/tools/download/doc_1793449790506_hscvx0j",
+    "outputFileName": "book-02_split.pdf",
+    "outputFileSize": 741774,
+    "owner": "usr_1793449784509_jwihc",
+    "processingTimeMs": 2733,
+    "status": "completed",
+    "toolSlug": "split-pdf",
+    "updatedAt": "2026-10-31T12:29:52.739Z"
   }
 ]

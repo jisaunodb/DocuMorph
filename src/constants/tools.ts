@@ -583,6 +583,39 @@ export const TOOLS: ToolMeta[] = [
     seoDescription: 'Convert PDF documents to PDF/A for long-term archiving and legal compliance. Meets ISO 19005-1 standards.',
     seoKeywords: ['pdf to pdfa', 'pdf a converter', 'iso 19005-1', 'archival pdf', 'long term preservation pdf'],
   },
+  {
+    slug: 'pdf-to-text',
+    name: 'PDF to TEXT',
+    shortDesc: 'Extract all readable text from any PDF document into clean, plain TXT format.',
+    longDesc: 'Quickly convert your PDF into editable plain text (.txt). Extracts page by page text streams, paragraphs, and words with instant copy and download.',
+    category: 'Convert from PDF',
+    icon: 'FileText',
+    popular: true,
+    acceptedFormats: ['.pdf'],
+    acceptedMimeTypes: ['application/pdf'],
+    maxFiles: 1,
+    badge: 'Popular',
+    features: [
+      'Extracts page-by-page text streams and paragraphs',
+      'Download as clean plain text (.txt) file',
+      'Instant text preview and one-click copy to clipboard',
+      'Fast, secure, and privacy-first processing',
+    ],
+    howToSteps: [
+      'Upload the PDF document you want to extract text from.',
+      'Click "PDF to TEXT" to begin extraction.',
+      'Review the extracted text preview or copy it immediately.',
+      'Download the complete document as a .txt file.',
+    ],
+    faq: [
+      { question: 'Will it preserve line breaks and page markers?', answer: 'Yes, page separators (--- Page N ---) and paragraph breaks are preserved cleanly.' },
+      { question: 'Can I copy the extracted text directly?', answer: 'Yes, DocuMorph provides an interactive text viewer with a one-click copy button.' },
+    ],
+    relatedSlugs: ['pdf-to-word', 'ocr', 'ai-summarizer', 'pdf-to-markdown'],
+    seoTitle: 'Convert PDF to Text Online - Free PDF to TXT Converter',
+    seoDescription: 'Extract plain text from PDF documents online in seconds. Free, accurate, and download as TXT or copy to clipboard.',
+    seoKeywords: ['pdf to text', 'convert pdf to txt', 'extract text from pdf', 'pdf text extractor online'],
+  },
 
   // ----------------------------------------------------
   // 5. Edit PDF

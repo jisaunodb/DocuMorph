@@ -109,5 +109,40 @@
     "owner": "admin_usr_001",
     "processingStatus": "completed",
     "updatedAt": "2026-09-11T05:52:30.342Z"
+  },
+  {
+    "_id": "file_1789121570715_7hul4",
+    "__v": 0,
+    "category": "converted",
+    "cloudinaryPublicId": "documorph/gig_thumbnail__1__converted_1789121569309",
+    "cloudinaryUrl": "https://res.cloudinary.com/uiipxgas/raw/upload/v1789121570/documorph/gig_thumbnail__1__converted_1789121569309",
+    "createdAt": "2026-09-11T10:12:50.717Z",
+    "currentName": "gig_thumbnail (1)_converted.docx",
+    "fileSize": 178,
+    "fileType": "docx",
+    "isFavorite": false,
+    "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "originalName": "gig_thumbnail (1)_converted.docx",
+    "owner": "admin_usr_001",
+    "processingStatus": "completed",
+    "updatedAt": "2026-09-11T10:12:50.716Z"
+  },
+  {
+    "_id": "file_1793449792884_4nwia",
+    "__v": 0,
+    "category": "converted",
+    "cloudinaryPublicId": "documorph/book-02_split_1793449790507",
+    "cloudinaryUrl": "https://res.cloudinary.com/uiipxgas/image/upload/v1793449792/documorph/book-02_split_1793449790507.pdf",
+    "createdAt": "2026-10-31T12:29:52.886Z",
+    "currentName": "book-02_split.pdf",
+    "fileSize": 741774,
+    "fileType": "pdf",
+    "isFavorite": false,
+    "mimeType": "application/pdf",
+    "originalName": "book-02_split.pdf",
+    "owner": "usr_1793449784509_jwihc",
+    "processingStatus": "completed",
+    "thumbnailUrl": "https://res.cloudinary.com/uiipxgas/image/upload/v1793449792/documorph/book-02_split_1793449790507.jpg",
+    "updatedAt": "2026-10-31T12:29:52.885Z"
   }
 ]

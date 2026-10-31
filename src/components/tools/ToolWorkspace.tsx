@@ -20,6 +20,7 @@ import {
   ExternalLink,
   X,
   Check,
+  Copy,
 } from 'lucide-react';
 
 interface ToolWorkspaceProps {
@@ -58,11 +59,24 @@ export const ToolWorkspace: React.FC<ToolWorkspaceProps> = ({ tool }) => {
     processingTimeMs: number;
     downloadId: string;
     mimeType?: string;
+    textContent?: string;
   } | null>(null);
+  const [copiedText, setCopiedText] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleCopyText = async () => {
+    if (!result?.textContent) return;
+    try {
+      await navigator.clipboard.writeText(result.textContent);
+      setCopiedText(true);
+      setTimeout(() => setCopiedText(false), 2000);
+    } catch (e) {
+      console.warn('Clipboard write error:', e);
+    }
+  };
 
   const handleDownloadFile = async () => {
     if (!result) return;
@@ -300,6 +314,41 @@ export const ToolWorkspace: React.FC<ToolWorkspaceProps> = ({ tool }) => {
                 </a>
               </div>
             </div>
+
+            {/* Interactive Extracted Text Content (For PDF to Text, OCR, Summarizer, Markdown) */}
+            {result.textContent && (
+              <div className="max-w-2xl mx-auto bg-slate-900 rounded-2xl border border-slate-800 shadow-lg overflow-hidden text-left animate-in fade-in">
+                <div className="px-4 py-3 bg-slate-950 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center space-x-2 text-xs font-bold text-slate-200">
+                    <FileText className="w-4 h-4 text-emerald-400" />
+                    <span>Extracted Plain Text</span>
+                    <span className="text-[11px] font-normal text-slate-400">
+                      • {result.textContent.split(/\s+/).filter(Boolean).length} words • {result.textContent.length} characters
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleCopyText}
+                    className="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 hover:text-white flex items-center space-x-1.5 shadow-xs transition"
+                  >
+                    {copiedText ? (
+                      <>
+                        <Check className="w-3.5 h-3.5 text-emerald-400" />
+                        <span className="text-emerald-400 font-bold">Copied to Clipboard!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-3.5 h-3.5 text-slate-400" />
+                        <span>Copy Text</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+                <div className="p-4 max-h-80 overflow-y-auto font-mono text-xs text-slate-200 whitespace-pre-wrap leading-relaxed select-all bg-slate-900/90 selection:bg-emerald-500 selection:text-slate-950">
+                  {result.textContent}
+                </div>
+              </div>
+            )}
 
             {/* Embedded Live Preview */}
             <div className="max-w-2xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden text-left">
@@ -1135,6 +1184,32 @@ export const ToolWorkspace: React.FC<ToolWorkspaceProps> = ({ tool }) => {
                         <option value="fra">French (Français)</option>
                         <option value="deu">German (Deutsch)</option>
                       </select>
+                    </div>
+                  )}
+
+                  {/* PDF to Text options */}
+                  {tool.slug === 'pdf-to-text' && (
+                    <div className="sm:col-span-3">
+                      <label className="block font-semibold text-slate-700 mb-1">Extraction Formatting</label>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {[
+                          { id: 'with-pages', label: 'Include Page Markers (--- Page N ---)' },
+                          { id: 'clean-flow', label: 'Continuous Paragraph Stream' },
+                        ].map((m) => (
+                          <button
+                            key={m.id}
+                            type="button"
+                            onClick={() => setOptions({ ...options, textFormat: m.id })}
+                            className={`py-2 px-3 rounded-lg border text-center font-bold text-xs transition ${
+                              (options.textFormat || 'with-pages') === m.id
+                                ? 'border-slate-900 bg-slate-900 text-white'
+                                : 'border-slate-200 bg-white text-slate-700'
+                            }`}
+                          >
+                            {m.label}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>

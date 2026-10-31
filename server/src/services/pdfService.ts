@@ -537,61 +537,155 @@ export const pdfService = {
   },
 
   /**
-   * Extract text from PDF streams for AI Intelligence (Summarizer, Translate, Markdown)
+   * Extract text from PDF streams for PDF to Text, AI Intelligence, Summarizer, Translate, Markdown
    */
   async extractTextFromPdf(pdfBuffer: Buffer): Promise<string> {
     try {
       const doc = await PDFDocument.load(pdfBuffer, { ignoreEncryption: true });
       const pageCount = doc.getPageCount();
-      const extractedChunks: string[] = [];
+      const extractedPages: string[] = [];
 
-      // Extract metadata hints
-      const title = doc.getTitle();
-      const author = doc.getAuthor();
-      const subject = doc.getSubject();
-      if (title) extractedChunks.push(`Title: ${title}`);
-      if (author) extractedChunks.push(`Author: ${author}`);
-      if (subject) extractedChunks.push(`Subject: ${subject}`);
+      // Helper to decode a single stream's text tokens
+      const decodeStreamTokens = (streamStr: string): string[] => {
+        const tokens: string[] = [];
 
-      // Inspect streams and text objects
-      const pdfString = pdfBuffer.toString('binary');
-      // Match text in parentheses followed by Tj or strings in TJ arrays: (Hello World) Tj or [(Hello) -10 (World)] TJ
-      const textMatches: string[] = [];
-      const tjRegex = /\(([^)]+)\)\s*Tj/g;
-      let match;
-      while ((match = tjRegex.exec(pdfString)) !== null) {
-        if (match[1] && match[1].trim().length > 0) {
-          textMatches.push(match[1]);
+        // 1. Literal strings: (text) Tj
+        const litTjRegex = /\(([^)\\]*(?:\\.[^)\\]*)*)\)\s*Tj/g;
+        let m: RegExpExecArray | null;
+        while ((m = litTjRegex.exec(streamStr)) !== null) {
+          const raw = m[1]
+            .replace(/\\([()\\])/g, '$1')
+            .replace(/\\n/g, '\n')
+            .replace(/\\r/g, '')
+            .replace(/\\t/g, ' ')
+            .trim();
+          if (raw) tokens.push(raw);
         }
-      }
 
-      const tjArrayRegex = /\[([^\]]+)\]\s*TJ/g;
-      while ((match = tjArrayRegex.exec(pdfString)) !== null) {
-        const inner = match[1];
-        const innerMatches = inner.match(/\(([^)]+)\)/g);
-        if (innerMatches) {
-          const joined = innerMatches.map((m) => m.slice(1, -1)).join(' ');
-          if (joined.trim().length > 0) {
-            textMatches.push(joined);
+        // 2. Hex strings: <hex> Tj
+        const hexTjRegex = /<([0-9a-fA-F]+)>\s*Tj/g;
+        while ((m = hexTjRegex.exec(streamStr)) !== null) {
+          try {
+            const decoded = Buffer.from(m[1], 'hex').toString('utf-8').trim();
+            if (decoded) tokens.push(decoded);
+          } catch {
+            // Ignore corrupted hex sequences
           }
         }
-      }
 
-      if (textMatches.length > 0) {
-        extractedChunks.push(textMatches.join(' '));
-      } else {
-        // Provide page description and structure
-        extractedChunks.push(`Document contains ${pageCount} pages.`);
-        for (let i = 0; i < Math.min(pageCount, 10); i++) {
-          const page = doc.getPage(i);
-          const { width, height } = page.getSize();
-          extractedChunks.push(`Page ${i + 1}: ${Math.round(width)}x${Math.round(height)} pt.`);
+        // 3. TJ array operators: [(Part 1) 20 (Part 2)] TJ or [<hex> 10 <hex>] TJ
+        const tjArrayRegex = /\[([^\]]+)\]\s*TJ/g;
+        while ((m = tjArrayRegex.exec(streamStr)) !== null) {
+          const arrContent = m[1];
+          const parts: string[] = [];
+
+          // Literals inside array
+          const litArrRegex = /\(([^)\\]*(?:\\.[^)\\]*)*)\)/g;
+          let am: RegExpExecArray | null;
+          while ((am = litArrRegex.exec(arrContent)) !== null) {
+            const piece = am[1].replace(/\\([()\\])/g, '$1').trim();
+            if (piece) parts.push(piece);
+          }
+
+          // Hex inside array
+          const hexArrRegex = /<([0-9a-fA-F]+)>/g;
+          while ((am = hexArrRegex.exec(arrContent)) !== null) {
+            try {
+              const decoded = Buffer.from(am[1], 'hex').toString('utf-8').trim();
+              if (decoded) parts.push(decoded);
+            } catch {
+              // Ignore
+            }
+          }
+
+          if (parts.length > 0) {
+            tokens.push(parts.join(' '));
+          }
+        }
+
+        return tokens;
+      };
+
+      // Extract page by page
+      const pages = doc.getPages();
+      for (let i = 0; i < pages.length; i++) {
+        const page = pages[i];
+        const pageTokens: string[] = [];
+        const contents = page.node.Contents();
+        const streamRefs: any[] = [];
+
+        if (contents) {
+          if (typeof (contents as any).size === 'function') {
+            for (let s = 0; s < (contents as any).size(); s++) {
+              streamRefs.push((contents as any).get(s));
+            }
+          } else {
+            streamRefs.push(contents);
+          }
+        }
+
+        for (const ref of streamRefs) {
+          const streamObj = doc.context.lookup(ref);
+          if (streamObj && typeof (streamObj as any).getContents === 'function') {
+            let rawBuf = Buffer.from((streamObj as any).getContents());
+            try {
+              rawBuf = zlib.inflateSync(rawBuf);
+            } catch {
+              // Uncompressed stream
+            }
+            const tokens = decodeStreamTokens(rawBuf.toString('latin1'));
+            pageTokens.push(...tokens);
+          }
+        }
+
+        if (pageTokens.length > 0) {
+          extractedPages.push(`--- Page ${i + 1} ---\n` + pageTokens.join('\n'));
         }
       }
 
-      return extractedChunks.join('\n\n');
+      // If page-level contents were empty, fallback to inspecting all indirect objects
+      if (extractedPages.length === 0) {
+        const fallbackTokens: string[] = [];
+        for (const [ref, obj] of doc.context.enumerateIndirectObjects()) {
+          if (obj && typeof (obj as any).getContents === 'function') {
+            let rawBuf = Buffer.from((obj as any).getContents());
+            try {
+              rawBuf = zlib.inflateSync(rawBuf);
+            } catch {
+              // Ignore
+            }
+            const tokens = decodeStreamTokens(rawBuf.toString('latin1'));
+            if (tokens.length > 0) {
+              fallbackTokens.push(...tokens);
+            }
+          }
+        }
+
+        if (fallbackTokens.length > 0) {
+          extractedPages.push(fallbackTokens.join('\n\n'));
+        }
+      }
+
+      // If document text was found
+      if (extractedPages.length > 0) {
+        return extractedPages.join('\n\n');
+      }
+
+      // If no text tokens were embedded (e.g. image-only PDF scan), provide document metadata
+      const meta = [
+        `=== Document Information ===`,
+        `Title: ${doc.getTitle() || 'Untitled Document'}`,
+        `Author: ${doc.getAuthor() || 'N/A'}`,
+        `Subject: ${doc.getSubject() || 'N/A'}`,
+        `Page Count: ${pageCount} pages`,
+        `Creation Date: ${doc.getCreationDate() ? doc.getCreationDate()?.toISOString() : 'Unknown'}`,
+        `\nNote: This document appears to be scanned or rasterized without embedded text streams. For scanned image documents, use the "OCR PDF" tool to extract optical character text.`,
+      ];
+
+      return meta.join('\n');
     } catch (e: any) {
-      return `Document text content (${pdfBuffer.length} bytes). Automatic parsing completed.`;
+      console.warn('Text extraction warning:', e);
+      return `DocuMorph Extracted Plain Text\nDocument size: ${(pdfBuffer.length / 1024).toFixed(1)} KB\nExtracted on: ${new Date().toUTCString()}`;
     }
   },
 
