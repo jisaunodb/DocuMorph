@@ -1,14 +1,87 @@
 [
   {
+    "_id": "log_1793450708229_sedxp",
+    "createdAt": "2026-10-31T12:45:08.229Z",
+    "userId": "admin_usr_001",
+    "userName": "Sarah Chen (Platform Admin)",
+    "userEmail": "admin@documorph.io",
+    "action": "User Signed In",
+    "category": "auth",
+    "ipAddress": "127.0.0.1"
+  },
+  {
+    "_id": "act_1793450119116_ne8f",
+    "userName": "jisaun",
+    "userEmail": "mdjisaun6@gmail.com",
+    "action": "Account Creation Notification Sent to mdjisaun6@gmail.com",
+    "category": "auth",
+    "details": {
+      "status": "notification_dispatched",
+      "timestamp": "2026-10-31T12:35:19.116Z"
+    },
+    "createdAt": "2026-10-31T12:35:19.122Z",
+    "updatedAt": "2026-10-31T12:35:19.122Z",
+    "__v": 0
+  },
+  {
+    "_id": "log_1793450119116_hiy8r",
+    "userId": "usr_1793450118965_mynzn",
+    "userName": "jisaun",
+    "userEmail": "mdjisaun6@gmail.com",
+    "action": "Account Created",
+    "category": "auth",
+    "details": {
+      "method": "local",
+      "notification": "dispatched"
+    },
+    "ipAddress": "127.0.0.1",
+    "createdAt": "2026-10-31T12:35:19.116Z",
+    "updatedAt": "2026-10-31T12:35:19.116Z",
+    "__v": 0
+  },
+  {
+    "_id": "log_1793449793168_xnstp",
+    "userId": "usr_1793449784509_jwihc",
+    "userName": "Google User",
+    "userEmail": "google.user@example.com",
+    "action": "Executed Split PDF",
+    "category": "tool",
+    "details": {
+      "toolSlug": "split-pdf",
+      "originalSize": 8134789,
+      "outputSize": 741774
+    },
+    "ipAddress": "127.0.0.1",
+    "createdAt": "2026-10-31T12:29:53.168Z",
+    "updatedAt": "2026-10-31T12:29:53.168Z",
+    "__v": 0
+  },
+  {
     "_id": "log_1789121833810_c2byj",
-    "createdAt": "2026-09-11T10:17:13.810Z",
+    "userId": "usr_1789121820533_lxpqa",
     "action": "payment_success",
+    "category": "tool",
     "details": "User subscribed to PRO via bKash Online (TranID: DM_1789121829984_302X9)",
-    "userId": "usr_1789121820533_lxpqa"
+    "createdAt": "2026-09-11T10:17:13.810Z",
+    "updatedAt": "2026-09-11T10:17:13.810Z",
+    "__v": 0
+  },
+  {
+    "_id": "act_1789121820679_m6h2",
+    "userName": "SSL Test User",
+    "userEmail": "ssltest@example.com",
+    "action": "Account Creation Notification Sent to ssltest@example.com",
+    "category": "auth",
+    "details": {
+      "status": "notification_dispatched",
+      "timestamp": "2026-09-11T10:17:00.679Z"
+    },
+    "createdAt": "2026-09-11T10:17:00.692Z",
+    "updatedAt": "2026-09-11T10:17:00.692Z",
+    "__v": 0
   },
   {
     "_id": "log_1789121820683_5r8vz",
-    "createdAt": "2026-09-11T10:17:00.683Z",
     "userId": "usr_1789121820533_lxpqa",
     "userName": "SSL Test User",
     "userEmail": "ssltest@example.com",
@@ -18,7 +91,10 @@
       "method": "local",
       "notification": "dispatched"
     },
-    "ipAddress": "127.0.0.1"
+    "ipAddress": "127.0.0.1",
+    "createdAt": "2026-09-11T10:17:00.683Z",
+    "updatedAt": "2026-09-11T10:17:00.683Z",
+    "__v": 0
   },
   {
     "_id": "log_1789121570992_qicr7",
@@ -105,23 +181,6 @@
     "ipAddress": "127.0.0.1",
     "createdAt": "2026-09-10T22:12:32.356Z",
     "updatedAt": "2026-09-10T22:12:32.356Z",
-    "__v": 0
-  },
-  {
-    "_id": "log_1789076852359_j3fva",
-    "userId": "usr_1789075994537_6bd2w",
-    "userName": "RAHMAN",
-    "userEmail": "mdjisaun86@gmail.com",
-    "action": "Executed Image to PDF",
-    "category": "tool",
-    "details": {
-      "toolSlug": "image-to-pdf",
-      "originalSize": 367376,
-      "outputSize": 506337
-    },
-    "ipAddress": "127.0.0.1",
-    "createdAt": "2026-09-10T21:47:32.359Z",
-    "updatedAt": "2026-09-10T21:47:32.359Z",
     "__v": 0
   },
   {

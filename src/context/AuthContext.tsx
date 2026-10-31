@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import { User } from '../types';
 import { api } from '../services/api';
 
+import { clientAuthStore } from '../services/clientAuthStore';
+
 interface AuthContextType {
   user: User | null;
   token: string | null;
@@ -23,9 +25,9 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(() => clientAuthStore.getCurrentUser());
   const [token, setToken] = useState<string | null>(localStorage.getItem('documorph_token'));
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Auth modal states
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -34,24 +36,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const refreshUser = useCallback(async () => {
     const currentToken = localStorage.getItem('documorph_token');
-    if (!currentToken) {
+    const cachedUser = clientAuthStore.getCurrentUser();
+
+    if (!currentToken && !cachedUser) {
       setUser(null);
       setLoading(false);
       return;
     }
+
+    if (cachedUser) {
+      setUser(cachedUser);
+    }
+
     try {
       const res = await api.getMe();
       if (res.success && res.user) {
         setUser(res.user);
-      } else {
+        clientAuthStore.setCurrentUser(res.user);
+      } else if (!cachedUser) {
         localStorage.removeItem('documorph_token');
         setToken(null);
         setUser(null);
       }
     } catch {
-      localStorage.removeItem('documorph_token');
-      setToken(null);
-      setUser(null);
+      // If server error or offline, keep cachedUser without logging user out
+      if (!cachedUser) {
+        localStorage.removeItem('documorph_token');
+        setToken(null);
+        setUser(null);
+      }
     } finally {
       setLoading(false);
     }
@@ -127,6 +140,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     localStorage.removeItem('documorph_token');
+    clientAuthStore.clearSession();
     setToken(null);
     setUser(null);
   };

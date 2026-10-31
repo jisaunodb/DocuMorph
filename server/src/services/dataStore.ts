@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
 import { UserModel } from '../models/User';
@@ -8,8 +9,12 @@ import { ConversionModel } from '../models/Conversion';
 import { ActivityLogModel, SystemSettingModel } from '../models/ActivityLog';
 import { PaymentModel, IPayment } from '../models/Payment';
 
-// Local resilient storage folder (used for cache + fallback)
-const DATA_DIR = path.join(process.cwd(), 'uploads', 'data');
+// Local resilient storage folder: On Vercel / serverless, process.cwd() is read-only, so use os.tmpdir()
+const isServerless = !!process.env.VERCEL || !!process.env.AWS_LAMBDA_FUNCTION_NAME || !!process.env.LAMBDA_TASK_ROOT;
+const DATA_DIR = isServerless
+  ? path.join(os.tmpdir(), 'documorph_data')
+  : path.join(process.cwd(), 'uploads', 'data');
+
 const USERS_FILE = path.join(DATA_DIR, 'users.json');
 const FILES_FILE = path.join(DATA_DIR, 'files.json');
 const CONVERSIONS_FILE = path.join(DATA_DIR, 'conversions.json');
@@ -17,33 +22,53 @@ const LOGS_FILE = path.join(DATA_DIR, 'logs.json');
 const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
 const PAYMENTS_FILE = path.join(DATA_DIR, 'payments.json');
 
+const memoryCache = new Map<string, any>();
+
 function ensureDataDir() {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+  } catch {
+    // In serverless, folder creation may be constrained, memoryCache acts as fallback
   }
 }
 
 function readJsonFile<T>(filePath: string, defaultValue: T): T {
-  ensureDataDir();
   try {
+    ensureDataDir();
     if (!fs.existsSync(filePath)) {
-      fs.writeFileSync(filePath, JSON.stringify(defaultValue, null, 2));
+      if (memoryCache.has(filePath)) {
+        return memoryCache.get(filePath);
+      }
+      try {
+        fs.writeFileSync(filePath, JSON.stringify(defaultValue, null, 2));
+      } catch {
+        // Fallback to memory
+      }
+      memoryCache.set(filePath, defaultValue);
       return defaultValue;
     }
     const data = fs.readFileSync(filePath, 'utf-8');
-    return JSON.parse(data);
-  } catch (err) {
-    console.error(`Error reading ${filePath}:`, err);
+    const parsed = JSON.parse(data);
+    memoryCache.set(filePath, parsed);
+    return parsed;
+  } catch {
+    if (memoryCache.has(filePath)) {
+      return memoryCache.get(filePath);
+    }
+    memoryCache.set(filePath, defaultValue);
     return defaultValue;
   }
 }
 
 function writeJsonFile<T>(filePath: string, data: T): void {
-  ensureDataDir();
+  memoryCache.set(filePath, data);
   try {
+    ensureDataDir();
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-  } catch (err) {
-    console.error(`Error writing ${filePath}:`, err);
+  } catch {
+    // In-memory cache already holds the latest state, preventing any serverless EROFS crash
   }
 }
 
