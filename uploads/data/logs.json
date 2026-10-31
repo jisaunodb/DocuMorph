@@ -1,5 +1,19 @@
 [
   {
+    "_id": "log_1793455288848_y91uy",
+    "createdAt": "2026-10-31T14:01:28.848Z",
+    "userId": "usr_1793455288694_o5six",
+    "userName": "Test User",
+    "userEmail": "testvercel@example.com",
+    "action": "Account Created",
+    "category": "auth",
+    "details": {
+      "method": "local",
+      "notification": "dispatched"
+    },
+    "ipAddress": "127.0.0.1"
+  },
+  {
     "_id": "log_1793451751598_3lzln",
     "userId": "usr_1793451742727_cop59",
     "userName": "Test User",

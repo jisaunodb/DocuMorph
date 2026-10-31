@@ -88,5 +88,19 @@
     "storageUsed": 0,
     "updatedAt": "2026-10-31T13:02:31.462Z",
     "lastLogin": "2026-10-31T13:02:31.460Z"
+  },
+  {
+    "_id": "usr_1793455288694_o5six",
+    "role": "user",
+    "storageUsed": 0,
+    "plan": "free",
+    "conversionsCount": 0,
+    "isActive": true,
+    "createdAt": "2026-10-31T14:01:28.694Z",
+    "updatedAt": "2026-10-31T14:01:28.694Z",
+    "name": "Test User",
+    "email": "testvercel@example.com",
+    "password": "$2b$10$q1wiWRJAPaYuQD/2S2vnou8z6aXW8seLQbNFEGIoB2/JkHuZ1OKl2",
+    "avatar": "https://api.dicebear.com/7.x/initials/svg?seed=Test%20User"
   }
 ]

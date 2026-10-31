@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import path from 'path';
 import fs from 'fs';
-import sharp from 'sharp';
+import { rasterizeSvgOrFallback, getSharp, createPureJsPng } from '../services/imageRasterizer';
 import { AuthRequest } from '../middleware/auth';
 import { pdfService } from '../services/pdfService';
 import { ocrService } from '../services/ocrService';
@@ -867,7 +867,7 @@ export const toolController = {
             <rect x="70" y="480" width="220" height="36" rx="8" fill="#0f172a"/>
             <text x="95" y="503" fill="#10b981" font-size="13" font-family="sans-serif" font-weight="bold">✓ DocuMorph Verified</text>
           </svg>`;
-          previewBuffer = await sharp(Buffer.from(svg)).jpeg({ quality: 90 }).toBuffer();
+          previewBuffer = await rasterizeSvgOrFallback(svg, 'jpg', { title: outputFileName });
           previewMimeType = 'image/jpeg';
         }
       } catch (err) {
@@ -1073,7 +1073,7 @@ export const toolController = {
           <rect x="70" y="480" width="220" height="36" rx="8" fill="#0f172a"/>
           <text x="95" y="503" fill="#10b981" font-size="13" font-family="sans-serif" font-weight="bold">✓ DocuMorph Verified</text>
         </svg>`;
-        const img = await sharp(Buffer.from(svg)).jpeg({ quality: 90 }).toBuffer();
+        const img = await rasterizeSvgOrFallback(svg, 'jpg', { title: item.filename });
         res.setHeader('Content-Type', 'image/jpeg');
         return res.send(img);
       } catch {

@@ -1,5 +1,5 @@
 import { PDFDocument, rgb, degrees, StandardFonts, PDFName, PDFRawStream } from 'pdf-lib';
-import sharp from 'sharp';
+import { rasterizeSvgOrFallback, getSharp, createPureJsPng } from './imageRasterizer';
 import zlib from 'zlib';
 
 export interface WatermarkOptions {
@@ -258,13 +258,15 @@ export const pdfService = {
     const margin = options.margin !== undefined ? options.margin : 20;
 
     for (const img of images) {
-      let cleanPngBuffer: Buffer;
+      let cleanPngBuffer: Buffer = img.buffer;
       try {
-        // Use sharp to normalize ANY image format into standard PNG with auto EXIF rotation
-        cleanPngBuffer = await sharp(img.buffer)
-          .rotate()
-          .png({ compressionLevel: 8 })
-          .toBuffer();
+        const sharp = await getSharp();
+        if (sharp) {
+          cleanPngBuffer = await sharp(img.buffer)
+            .rotate()
+            .png({ compressionLevel: 8 })
+            .toBuffer();
+        }
       } catch (sharpErr) {
         cleanPngBuffer = img.buffer;
       }
@@ -361,11 +363,14 @@ export const pdfService = {
 
             if (rawBuffer && rawBuffer.length > 100) {
               try {
-                const sharpInstance = sharp(rawBuffer);
-                if (format === 'jpg') {
-                  return await sharpInstance.jpeg({ quality: 95 }).toBuffer();
-                } else {
-                  return await sharpInstance.png().toBuffer();
+                const sharp = await getSharp();
+                if (sharp) {
+                  const sharpInstance = sharp(rawBuffer);
+                  if (format === 'jpg') {
+                    return await sharpInstance.jpeg({ quality: 95 }).toBuffer();
+                  } else {
+                    return await sharpInstance.png().toBuffer();
+                  }
                 }
               } catch {
                 // If stream decoding fails with sharp, fall through to vector render
@@ -441,17 +446,18 @@ export const pdfService = {
 </svg>
       `;
 
-      const sharpInstance = sharp(Buffer.from(svg));
-      if (format === 'jpg') {
-        return await sharpInstance.jpeg({ quality: 95 }).toBuffer();
-      } else {
-        return await sharpInstance.png().toBuffer();
-      }
+      return await rasterizeSvgOrFallback(svg, format, {
+        title: cleanTitle,
+        pageNumber: 1,
+        totalPages: pageCount,
+      });
     } catch (err: any) {
-      // Fallback: create solid white canvas with error note
-      const fallbackSvg = `<svg width="800" height="1000" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#ffffff"/><text x="50%" y="50%" font-size="20" fill="#333" text-anchor="middle">Processed Document Image (${format.toUpperCase()})</text></svg>`;
-      const sharpInstance = sharp(Buffer.from(fallbackSvg));
-      return format === 'jpg' ? await sharpInstance.jpeg().toBuffer() : await sharpInstance.png().toBuffer();
+      console.warn('[DocuMorph Engine] pdfToImage fallback invoked:', err?.message);
+      return createPureJsPng({
+        title: fileName,
+        pageNumber: 1,
+        totalPages: 1,
+      });
     }
   },
 
@@ -827,7 +833,10 @@ export const pdfService = {
 
     if (signatureImageBuffer) {
       try {
-        const sigPng = await sharp(signatureImageBuffer).png().toBuffer();
+        const sharp = await getSharp();
+        const sigPng = sharp
+          ? await sharp(signatureImageBuffer).png().toBuffer()
+          : signatureImageBuffer;
         const embeddedImg = await doc.embedPng(sigPng);
         lastPage.drawImage(embeddedImg, {
           x: x + 10,
@@ -1117,17 +1126,26 @@ export const pdfService = {
    * Scan to PDF: Converts camera snaps or raw scanner buffers with document cleanup
    */
   async scanToPdf(imageBuffers: Buffer[], grayscale: boolean = false, autoEnhance: boolean = true): Promise<Buffer> {
+    const sharp = await getSharp();
     const processedBuffers: Buffer[] = [];
     for (const buf of imageBuffers) {
-      let pipeline = sharp(buf);
-      if (grayscale) {
-        pipeline = pipeline.grayscale();
+      if (sharp) {
+        try {
+          let pipeline = sharp(buf);
+          if (grayscale) {
+            pipeline = pipeline.grayscale();
+          }
+          if (autoEnhance) {
+            pipeline = pipeline.normalize().sharpen();
+          }
+          const cleaned = await pipeline.jpeg({ quality: 92 }).toBuffer();
+          processedBuffers.push(cleaned);
+          continue;
+        } catch {
+          // Fall through to raw buffer
+        }
       }
-      if (autoEnhance) {
-        pipeline = pipeline.normalize().sharpen();
-      }
-      const cleaned = await pipeline.jpeg({ quality: 92 }).toBuffer();
-      processedBuffers.push(cleaned);
+      processedBuffers.push(buf);
     }
 
     return this.imagesToPdf(processedBuffers, { pageSize: 'a4', margin: 15 });
